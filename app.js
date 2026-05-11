@@ -1,4 +1,18 @@
-const cases = [
+const analysisResult = {
+  id: "20250813_p2",
+  trial: "20250813_p2_side_right_1c",
+  videoHz: 5.46,
+  leftHz: 5.20,
+  goldHz: 5.42,
+  errorHz: 0.04,
+  risk: "高风险",
+  riskTitle: "双手均出现稳定震颤频段",
+  image: "./assets/spectrum_stable.png",
+  method: "tips_relative_wrist_pca_validated",
+  note: "双手频率均落在常见帕金森震颤筛查范围，建议神经内科进一步评估。"
+};
+
+const validationCases = [
   {
     id: "20250731_p1",
     trial: "20250731_p1_side_right_1c",
@@ -74,7 +88,6 @@ const analyzeBtn = document.getElementById("analyzeBtn");
 const progressBar = document.getElementById("progressBar");
 const processNote = document.getElementById("processNote");
 const steps = [...document.querySelectorAll("#steps li")];
-const caseSwitcher = document.getElementById("caseSwitcher");
 const rightHz = document.getElementById("rightHz");
 const leftHz = document.getElementById("leftHz");
 const riskLevel = document.getElementById("riskLevel");
@@ -85,38 +98,19 @@ const spectrumImage = document.getElementById("spectrumImage");
 const caseId = document.getElementById("caseId");
 const compareBody = document.getElementById("compareBody");
 
-let selectedCase = cases[0];
-
-function renderCase(current) {
-  selectedCase = current;
-  rightHz.textContent = `${current.videoHz.toFixed(2)} Hz`;
-  leftHz.textContent = current.leftHz > 0 ? `${current.leftHz.toFixed(2)} Hz` : "未检出";
-  riskLevel.textContent = current.risk;
-  riskTitle.textContent = current.riskTitle;
-  riskText.textContent = `${current.note} 本结果仅供参考，具体请结合临床表现并咨询专业医生。`;
-  resultText.textContent = current.note;
-  spectrumImage.src = current.image;
-  caseId.textContent = current.id;
-
-  [...caseSwitcher.children].forEach((button) => {
-    button.classList.toggle("active", button.dataset.caseId === current.id);
-  });
-}
-
-function renderCases() {
-  cases.forEach((item) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.dataset.caseId = item.id;
-    button.textContent = item.id;
-    button.addEventListener("click", () => renderCase(item));
-    caseSwitcher.appendChild(button);
-  });
-  renderCase(cases[0]);
+function renderAnalysisResult() {
+  rightHz.textContent = `${analysisResult.videoHz.toFixed(2)} Hz`;
+  leftHz.textContent = analysisResult.leftHz > 0 ? `${analysisResult.leftHz.toFixed(2)} Hz` : "未检出";
+  riskLevel.textContent = analysisResult.risk;
+  riskTitle.textContent = analysisResult.riskTitle;
+  riskText.textContent = `${analysisResult.note} 本结果仅供参考，具体请结合临床表现并咨询专业医生。`;
+  resultText.textContent = "当前区域展示本次上传视频的分析结果；下方金标准对比表仅用于算法验证展示。";
+  spectrumImage.src = analysisResult.image;
+  caseId.textContent = analysisResult.id;
 }
 
 function renderTable() {
-  compareBody.innerHTML = cases
+  compareBody.innerHTML = validationCases
     .map(
       (item) => `
         <tr>
@@ -158,11 +152,11 @@ analyzeBtn.addEventListener("click", () => {
 
     if (step >= steps.length) {
       window.clearInterval(timer);
-      processNote.textContent = `筛查完成：展示 ${selectedCase.id} 的双手视频结果；金标准对比仅在算法验证区展示。`;
+      processNote.textContent = `筛查完成：展示当前视频的双手分析结果；金标准对比仅在算法验证区展示。`;
       document.getElementById("result").scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, 420);
 });
 
-renderCases();
+renderAnalysisResult();
 renderTable();
