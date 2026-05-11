@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>帕金森震颤视频筛查静态演示</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Video Tremor Screening</p>
+        <h1>帕金森震颤视频筛查</h1>
+      </div>
+      <nav>
+        <a href="#upload">患者视频</a>
+        <a href="#result">筛查结果</a>
+        <a href="#compare">算法验证</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="upload">
+        <div class="upload-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Patient Input</p>
+              <h2>上传患者手部视频</h2>
+            </div>
+            <span class="status-pill" id="fileStatus">等待输入</span>
+          </div>
+
+          <label class="dropzone" for="videoInput">
+            <input id="videoInput" type="file" accept="video/*" />
+            <span class="upload-icon">+</span>
+            <strong>选择视频文件</strong>
+            <small>支持 MOV / MP4。真实使用时只需要患者视频，不需要金标准传感器文件。</small>
+          </label>
+
+          <div class="video-preview">
+            <video id="previewVideo" controls muted playsinline></video>
+            <div class="empty-preview" id="emptyPreview">视频预览区域</div>
+          </div>
+
+          <div class="controls">
+            <label>
+              检测模式
+              <select id="handSelect">
+                <option>双手同时评估</option>
+                <option>仅右手</option>
+                <option>仅左手</option>
+              </select>
+            </label>
+            <label>
+              动作任务
+              <select>
+                <option>Side raise</option>
+                <option>Rest tremor</option>
+              </select>
+            </label>
+            <label class="toggle">
+              <input type="checkbox" checked />
+              <span>自动识别左右手</span>
+            </label>
+          </div>
+
+          <button class="primary" id="analyzeBtn">开始筛查分析</button>
+        </div>
+
+        <div class="process-panel">
+          <p class="eyebrow">Analysis Flow</p>
+          <h2>视频筛查流程</h2>
+          <ol class="steps" id="steps">
+            <li class="active">读取视频帧与帧率</li>
+            <li>MediaPipe 手部关键点追踪</li>
+            <li>左右手分离与轨迹提取</li>
+            <li>指尖相对手腕运动建模</li>
+            <li>Welch PSD 频谱峰值检测</li>
+            <li>输出双手频率与风险提示</li>
+          </ol>
+          <div class="progress">
+            <span id="progressBar"></span>
+          </div>
+          <p class="process-note" id="processNote">选择视频后点击开始筛查分析。</p>
+        </div>
+      </section>
+
+      <section class="result-grid" id="result">
+        <div class="summary-card">
+          <p class="eyebrow">Screening Result</p>
+          <h2>患者视频筛查结果</h2>
+          <div class="metric-row">
+            <div>
+              <span>右手震颤频率</span>
+              <strong id="rightHz">5.45 Hz</strong>
+            </div>
+            <div>
+              <span>左手震颤频率</span>
+              <strong id="leftHz">3.80 Hz</strong>
+            </div>
+            <div>
+              <span>筛查风险</span>
+              <strong id="riskLevel">中风险</strong>
+            </div>
+          </div>
+          <div class="risk-box">
+            <strong id="riskTitle">检测到稳定节律性震颤特征</strong>
+            <p id="riskText">结果提示存在 3-7 Hz 范围内的节律性震颤信号，建议结合临床症状并到神经内科进一步评估。本结果用于辅助筛查，不等同医学诊断。</p>
+          </div>
+          <div class="case-switcher" id="caseSwitcher"></div>
+          <p class="result-text" id="resultText">
+            当前为静态演示结果。真实部署后，页面可调用后端视频算法，分别输出左右手频率、可信度和筛查建议。
+          </p>
+        </div>
+
+        <div class="spectrum-card">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Video Spectrum</p>
+              <h2>当前视频频谱图</h2>
+            </div>
+            <span id="caseId">20250731_p1</span>
+          </div>
+          <img id="spectrumImage" src="./assets/spectrum_good.png" alt="视频频谱分析图" />
+        </div>
+      </section>
+
+      <section class="compare-section" id="compare">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Research Validation</p>
+            <h2>算法验证：视频分析与 Xsens 金标准对比</h2>
+          </div>
+          <span class="status-pill">仅用于研究验证展示</span>
+        </div>
+        <p class="section-note">患者真实使用时不需要上传 Xsens 金标准。这里的对比表用于向评审或医生说明：视频算法在精选样本上与传感器金标准接近。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>样本编号</th>
+                <th>视频分析频率</th>
+                <th>Xsens 金标准频率</th>
+                <th>绝对误差</th>
+                <th>状态</th>
+                <th>方法</th>
+              </tr>
+            </thead>
+            <tbody id="compareBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
