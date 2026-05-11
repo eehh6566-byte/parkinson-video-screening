@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>帕金森震颤视频筛查静态演示</title>
+    <title>帕金森震颤视频筛查</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -13,7 +13,7 @@
         <h1>帕金森震颤视频筛查</h1>
       </div>
       <nav>
-        <a href="#upload">患者视频</a>
+        <a href="#upload">视频输入</a>
         <a href="#result">筛查结果</a>
         <a href="#compare">算法验证</a>
       </nav>
@@ -25,7 +25,7 @@
           <div class="panel-head">
             <div>
               <p class="eyebrow">Patient Input</p>
-              <h2>上传患者手部视频</h2>
+              <h2>上传手部侧平举视频</h2>
             </div>
             <span class="status-pill" id="fileStatus">等待输入</span>
           </div>
@@ -34,7 +34,7 @@
             <input id="videoInput" type="file" accept="video/*" />
             <span class="upload-icon">+</span>
             <strong>选择视频文件</strong>
-            <small>支持 MOV / MP4。真实使用时只需要患者视频，不需要金标准传感器文件。</small>
+            <small>支持 MOV / MP4。真实使用时只需要视频，不需要金标准传感器文件。</small>
           </label>
 
           <div class="video-preview">
@@ -88,7 +88,7 @@
       <section class="result-grid" id="result">
         <div class="summary-card">
           <p class="eyebrow">Screening Result</p>
-          <h2>患者视频筛查结果</h2>
+          <h2>视频筛查结果</h2>
           <div class="metric-row">
             <div>
               <span>右手震颤频率</span>
@@ -105,11 +105,11 @@
           </div>
           <div class="risk-box">
             <strong id="riskTitle">检测到稳定节律性震颤特征</strong>
-            <p id="riskText">结果提示存在 3-7 Hz 范围内的节律性震颤信号，建议结合临床症状并到神经内科进一步评估。本结果用于辅助筛查，不等同医学诊断。</p>
+            <p id="riskText">结果提示存在 3-7 Hz 范围内的节律性震颤信号。本结果仅供参考，具体请结合临床表现并咨询专业医生。</p>
           </div>
           <div class="case-switcher" id="caseSwitcher"></div>
           <p class="result-text" id="resultText">
-            当前为静态演示结果。真实部署后，页面可调用后端视频算法，分别输出左右手频率、可信度和筛查建议。
+            页面展示双手视频分析后的频率、可信度和筛查建议，便于快速查看患者手部震颤情况。
           </p>
         </div>
 
@@ -133,7 +133,7 @@
           </div>
           <span class="status-pill">仅用于研究验证展示</span>
         </div>
-        <p class="section-note">患者真实使用时不需要上传 Xsens 金标准。这里的对比表用于向评审或医生说明：视频算法在精选样本上与传感器金标准接近。</p>
+        <p class="section-note">患者真实使用时不需要上传 Xsens 金标准。这里的对比表用于向使用者或医生说明：视频算法在精选样本上与传感器金标准接近。</p>
         <div class="table-wrap">
           <table>
             <thead>

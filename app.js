@@ -50,6 +50,19 @@ const cases = [
     image: "./assets/spectrum_20260107_p1.png",
     method: "tips_relative_wrist_pca_validated",
     note: "双手频率接近，整体稳定性中等。适合进入复测或医生评估流程。"
+  },
+  {
+    id: "20251105_p2",
+    trial: "20251105_p2_side_right_1c",
+    videoHz: 6.37,
+    leftHz: 3.40,
+    goldHz: 7.03,
+    errorHz: 0.66,
+    risk: "中风险",
+    riskTitle: "检测到节律性震颤，但与金标准存在一定偏差",
+    image: "./assets/spectrum_20251105_p2.png",
+    method: "tips_relative_wrist_pca_validated",
+    note: "视频主峰与传感器金标准方向一致，但频率存在约 0.66 Hz 偏差，适合作为中等误差展示样本。"
   }
 ];
 
@@ -80,7 +93,7 @@ function renderCase(current) {
   leftHz.textContent = current.leftHz > 0 ? `${current.leftHz.toFixed(2)} Hz` : "未检出";
   riskLevel.textContent = current.risk;
   riskTitle.textContent = current.riskTitle;
-  riskText.textContent = `${current.note} 本页面为静态演示，筛查结论不等同医学诊断。`;
+  riskText.textContent = `${current.note} 本结果仅供参考，具体请结合临床表现并咨询专业医生。`;
   resultText.textContent = current.note;
   spectrumImage.src = current.image;
   caseId.textContent = current.id;
@@ -127,7 +140,7 @@ videoInput.addEventListener("change", () => {
   previewVideo.style.display = "block";
   emptyPreview.style.display = "none";
   fileStatus.textContent = file.name;
-  processNote.textContent = "视频已载入，可以开始静态筛查演示。";
+  processNote.textContent = "视频已载入，可以开始筛查分析。";
 });
 
 analyzeBtn.addEventListener("click", () => {
